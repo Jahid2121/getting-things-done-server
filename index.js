@@ -28,6 +28,7 @@ async function run() {
 
     const userCollection = client.db('TaskDB').collection('users')
     const taskCollection = client.db('TaskDB').collection('tasks')
+    const benefitCollection = client.db('TaskDB').collection('benefit')
 
     app.post('/users', async (req, res) => {
         const user = req.body;
@@ -42,7 +43,22 @@ async function run() {
         res.send(result)
     })
 
+    app.get('/tasks', async (req, res) => {
+        const result = await taskCollection.find().toArray()
+        res.send(result)
+      })
 
+      app.delete('/tasks/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) }
+        const result = await taskCollection.deleteOne(query)
+        res.send(result)
+      })
+
+      app.get('/benefit', async (req, res) => {
+        const result = await benefitCollection.find().toArray()
+        res.send(result)
+      })
 
 
 
